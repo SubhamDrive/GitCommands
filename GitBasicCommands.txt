@@ -1,0 +1,85 @@
+GIT NOTES
+
+Distributed Version Control Systems
+This is where Distributed Version Control Systems (DVCSs) step in. In a DVCS (such as Git, Mercurial, Bazaar or Darcs), clients don’t just check out the latest snapshot of the files; rather, they fully mirror the repository, including its full history. Thus, if any server dies, and these systems were collaborating via that server, any of the client repositories can be copied back up to the server to restore it. Every clone is really a full backup of all the data.
+
+
+
+
+
+
+git --version
+
+git config --global user.name subham
+git config --global user.email subham@gmail.com
+git config user.name
+
+
+Create folder
+
+Git init 
+
+Create file index.html 						It is in modified state
+
+Git status									it will tell the status of the file(if file coloraturas is green then it is added and ready to commit ad if it is orange then it modified)
+
+Git add index.html							it will add file in staging area
+
+Git add . 									it will add all modified file
+
+git commit -m "Added index and first html file"	it will commit all the changes
+
+Git log 									it will tell about all the commits made
+
+Git log —oneline 							it will tell about same thing of the above commands
+
+
+Git branch FirstBranch						it will create a branch with name FirstBranch
+
+Git branch -a 								it will show all the branch available
+
+Git checkout FirstBranch					it will switched to this branch
+
+Git branch -D FirstBranch					it will delete this branch if its not merged with master
+
+Git branch -d FirstBranch					it will delete this branch if its merged with master
+
+Git checkout -b FirstBranch1					it will create as well as checkout the branch 
+
+When you want to merge a branch then you have to be that branch
+Example if I want to merge branch A into branch master then I have to checkout to master branch
+
+
+Git merge FirstBranch1 						for merging a branch to another, always keep there in master branch whenever merge
+
+
+There two method to create repo first is create in local computer and push in GitHub and second create repo in github and clone it in local
+
+
+ git remote add origin https://github.com/SubhamDrive/LearnGit.git			this will make origin as the repository name we do not have to copy paste the link all the time
+
+git push origin master							This will push the code to the remote directory
+
+git push origin BranchName						Whatever branch we want to push we have to give its name
+
+
+SECOND METHOD
+
+git clone https://github.com/SubhamDrive/PythonCode.git
+
+Cd into the file
+
+git add .
+
+git commit -m "Added First.py "
+
+ git remote -v
+
+git push origin master
+
+git pull origin master
+
+git checkout -b index-html
+
+git push origin index-html
+
