@@ -8,16 +8,16 @@ This is where Distributed Version Control Systems (DVCSs) step in. In a DVCS (su
 
 
 
-git --version
+git --Version                 						It Will Show the Git version
 
-git config --global user.name subham
-git config --global user.email subham@gmail.com
+git config --global user.name SubhamDrive    		It Will set the username
+git config --global user.email subham@gmail.com 	It Will set the user gmail
 git config user.name
 
 
 Create folder
 
-Git init 
+Git init 									It Will Initilize a folder with init
 
 Create file index.html 						It is in modified state
 
