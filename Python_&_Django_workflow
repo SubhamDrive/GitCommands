@@ -1,0 +1,215 @@
+Step 1: Verify that you have Python on your computer
+Open your terminal and type:
+python --version
+
+Step 2: Install pip
+After you have made sure that you have Python, it is time to install pip.
+
+pip is a tool that enable us to easily install Django.
+
+If you are not sure if you have pip on you computer, you can open your terminal and enter:
+
+pip --version
+
+If you don’t have pip on your computer, you have to get the get-pip.py installation file. 
+
+Afterwards, change directory to the location get-pip.py, go to your terminal, and enter:
+
+python get-pip.py
+
+Step 3: Using pip to install Django
+After you make sure you have pip installed on your computer, go to the terminal and enter:
+sudo pip install Django
+You will need to enter the password of your computer.
+
+
+Step 1: Create a project
+Open your terminal, cd to your Desktop or the place where you want to put your project and enter the following command:
+
+django-admin.py startproject blog
+
+Step 2:
+In your terminal, cd to into the blog folder and enter:
+
+python manage.py runserver
+
+#to create app we use this command
+django-amdin startapp books
+
+What is app in Django??
+An app is Small entity of an project which perform certain type of functionality in our project.
+
+Two part of website
+================
+1>User Interface(forms,buttons )
+2>Backend (Database)
+
+Overview of an app
+===============
+Models.py—>it allows user to create database table to store website data.
+
+Views.py—>This file contains all the user interface part which user can see.
+
+Urls.py —> its contains the url patterns which is going to matchup with the urls which we are going to enter in our website
+
+Admin.py—>  Django provide a admin part so when ever we host a website we need an admin panel too control it this file helps us to create it.(create,delete)
+
+Apps.py —> It contains the details about the app.
+
+Test.py—>it contains the code which automatically test the code.
+
+The main files which we are working with are models.py,urls.py,view.py.
+
+Explanation:
+——————
+First user will create view.py
+
+Then it will add function in books.urls.py
+
+Then it add in that urls in mysite.urls.py
+
+##So when user call this url “http://127.0.0.1:8000/books/ 
+	it will call mystie.urls.py and search for incl
+	after that it will navigate to books.url.py and search for index file
+	and after that is will load the page views.py page 
+
+##Django comes with default database sqlite
+
+
+#How to make migrations??
+
+‘.manage.py migrate 	-it  will do all the migrations
+
+When we create or update database in Django we need to apply migrations
+
+#Create Database??
+When you want to store data of an app you will create a class in that app models.py page
+Ex-
+class Book(models.Model):
+    Name = models.CharField(max_length=100)
+    Author = models.CharField(max_length=100)
+    Price = models.CharField(max_length=100)
+    Type = models.CharField(max_length=100)
+
+#To use database for particular app we need to check app is installed or not?
+We check in settings.py file we will add app in it ex- 'books.apps.BooksConfig', so here books is app and app is a file and BooksConfig is function name which is in apps.py
+
+#To add in database we need to perform three commands
+1>./manage.py makemigrations books
+2>./manage.py sqlmigrate books 0001
+3>./manage.py migrate
+
+
+#Add Data to The database
+================
+First goto shell
+ ./manage.py shell this command will open shell for you
+>>> from books.models import Book
+>>> Book.objects.all()
+<QuerySet []>
+>>> a=Book()
+>>> a.name="Life"
+>>> a.author="Subham"
+>>> a.price="10$"
+>>> a.type="Business"
+>>> a.save()
+>>> Book.objects.all()
+<QuerySet [<Book: Book object>]>
+>>> a.name
+'Life'
+>>> a.author
+'Subham'
+>>> a.price
+'10$'
+>>> a.type
+'Business'
+ Book.objects.filter(id=2)
+
+
+
+#Create SuperUser
+./manage.py createsuperuser
+Then follow the instruction
+
+Username ->Subham
+Email	->chadhary@gmail.com
+Pass		->Subham$123
+
+
+#To Add Table in Admin Pannel
+
+Go to App directory and in goto admin.py
+Write
+from .models import Book
+admin.site.register(Book)
+
+
+#Creating another view in an app
+First create url for that view in that app urls.py
+Second create function in view.py for that urls
+Ex
+books/urls.py
+url(r'^(?P<book_id>[0-9]+)/$',views.detail,name="detail"),
+url(r'^(?P<book_name>[\w\-]+)/$',views.byName,name="byName"),
+
+books/views.py
+def detail(request,book_id):
+    return HttpResponse("<h2>Details For Book Id:" +str(book_id)+ "</h2>")
+
+def byName(request,book_name):
+    return HttpResponse("<h2>Details For Book_name: " +str(book_name)+ "</h2>")
+
+
+#connect database and print data on webpage
+Update views.py for the app you want to show data
+
+def index(request):
+    all_books = Book.objects.all()
+    html=''
+    for book in all_books:
+        url = '/books/' + str(book.id) + "/"
+        html+= '<a href="'+ url +'">' + str(book.Name) + '</a><br>'
+    return HttpResponse(html)
+
+
+#Creating template
+=============
+1>create a folder template in app folder
+2>create a folder in teplates folder with the name of app book
+3>now create html file in it index.html
+
+Changes
+View.py
+=======
+from django.template import loader
+
+def index(request):
+    all_books = Book.objects.all()
+    template = loader.get_template('books/index.html')
+    context={
+        'all_books': all_books
+    }
+    return HttpResponse(template.render(context,request))
+
+Index.html
+===============
+<ul>
+    {% for book in all_books %}
+    <li><a href="/books/{{book.id}}/">{{book.Name}}</a></li>
+    {% endfor %}
+</ul>
+
+#Rissing 404 error
+================
+Views.py
+
+def detail(request,book_id):
+    try:
+        book = Book.objects.get(id=book_id)
+    except Book.DoesNotExist:
+        raise Http404("This Book Dose Not Exist")
+
+    return render(request,'books/detail.html',{'book':book})
+
+Create details.html in template
+{{book}}
